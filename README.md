@@ -2,7 +2,7 @@
 
 ## Overview
 
-The NixOS Everyday Modules Flake provides a collection of useful modules for everyday use in NixOS configurations. These modules are designed to simplify common tasks, streamline system management, and enhance your NixOS experience.
+The NixOS Everyday Flake provides a collection of useful modules for everyday use in NixOS configurations. These modules are designed to simplify common tasks, streamline system management, and enhance your NixOS experience.
 
 Whether you're a seasoned NixOS user or just getting started, these modules aim to make your daily system administration tasks more convenient and efficient.
 
