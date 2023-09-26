@@ -10,7 +10,7 @@ Whether you're a seasoned NixOS user or just getting started, these modules aim 
 
 ### 1. `nixos.everyday.logger`
 
-Configure a `logger` to pipe all system logs in the system console (without login).
+Configure a `logger` systemd service to pipe all system logs in the system console (without requiring login).
 
 ## Getting Started
 
@@ -29,8 +29,7 @@ To get started with NixOS Everyday Modules Flake, follow these steps:
           system = "x86_64-linux";
           modules = [
             # Add the specific modules you want to use from the flake.
-            nixos-everyday.nixos.everyday.browsers
-            nixos-everyday.nixos.everyday.email
+            nixos-everyday.nixos.everyday.logger
             # ...
           ];
         };
@@ -38,7 +37,7 @@ To get started with NixOS Everyday Modules Flake, follow these steps:
     }
     ```
 
-2. Customize the modules as needed by referring to the individual module documentation provided below.
+2. Customize the modules as needed by referring to the individual module documentation provided above.
 
 3. Apply the configuration changes using the `nixos-rebuild` command:
 
