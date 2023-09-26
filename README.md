@@ -45,13 +45,9 @@ To get started with NixOS Everyday, follow these steps:
     nixos-rebuild switch --flake .#my-system
     ```
 
-## Documentation
-
-For detailed documentation and usage instructions for each module, refer to the documentation folder provided with this flake.
-
 ## Contributing
 
-We welcome contributions from the NixOS community to improve and expand the NixOS Everyday Flake. If you have ideas for new modules or improvements to existing ones, please open an issue or submit a pull request on our [GitHub repository](https://github.com/klarkc/nixos-everyday).
+We welcome contributions from the NixOS community to improve and expand the NixOS Everyday. If you have ideas for new modules or improvements to existing ones, please open an issue or submit a pull request on our [GitHub repository](https://github.com/klarkc/nixos-everyday).
 
 ## License
 
