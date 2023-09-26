@@ -21,11 +21,12 @@ To get started with NixOS Everyday, follow these steps:
     ```nix
     {
       inputs = {
+        nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
         everyday.url = "github:klarkc/nixos-everyday";
       };
 
-      outputs = { self, everyday, ... }: {
-        nixosConfigurations.my-system = nixos.lib.nixosSystem {
+      outputs = { self, nixpkgs, everyday, ... }: {
+        nixosConfigurations.my-system = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           modules = [
             # Add the specific modules you want to use from the flake.
