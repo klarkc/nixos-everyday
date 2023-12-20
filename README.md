@@ -72,6 +72,8 @@ The host source keys are mounted in `/var/keys` and if:
 
 #### Usage with agenix
 
+[`agenix`](https://github.com/ryantm/agenix) is a small and convenient Nix library for securely managing and deploying secrets using common public-private SSH key pairs.
+
 ```nix
 nixpkgs.lib.nixosSystem {
   system = "x86_64-linux";
