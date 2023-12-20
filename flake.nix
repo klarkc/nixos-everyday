@@ -16,8 +16,42 @@
               };
             };
           };
+          host-keys = { config, lib, ... }:
+            {
+              options.host-keys = {
+                dir = lib.mkOption {
+                  type = lib.types.str;
+                  default = "/var/keys";
+                };
+                source = lib.mkOption {
+                  type = lib.types.str;
+                };
+              };
+              config =
+                let cfg = config.host-keys; in
+                {
+                  environment.etc = lib.mkIf config.services.sshd.enable
+                    {
+                      "ssh/ssh_host_ed25519_key" = {
+                        mode = "0600";
+                        source = "${cfg.dir}/id_ed25519";
+                      };
+                      "ssh/ssh_host_ed25519_key.pub" = {
+                        mode = "0644";
+                        source = "${cfg.dir}/id_ed25519.pub";
+                      };
+                    };
+                  virtualisation.sharedDirectories.keys = {
+                    source = cfg.source;
+                    target = cfg.dir;
+                  };
+                  age.identityPaths =
+                    lib.mkIf (builtins.hasAttr "age" config)
+                      [ "${config.host-keys.dir}/id_ed25519" ];
+                };
+            };
         in
-        { inherit logger; };
+        { inherit logger host-keys; };
     in
     { inherit nixosModules; };
 

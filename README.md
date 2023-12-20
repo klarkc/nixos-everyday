@@ -6,11 +6,6 @@ The NixOS Everyday provides a collection of useful modules for everyday use in N
 
 Whether you're a seasoned NixOS user or just getting started, these modules aim to make your daily system administration tasks more convenient and efficient.
 
-## Features
-
-### 1. `nixosModules.logger`
-
-Configure a `logger` systemd service to pipe all system logs in the system console (without requiring login).
 
 ## Getting Started
 
@@ -45,6 +40,57 @@ To get started with NixOS Everyday, follow these steps:
     ```bash
     nixos-rebuild switch --flake .#my-system
     ```
+## Features
+
+### 1. `nixosModules.logger`
+
+Configure a `logger` systemd service to pipe all system logs in the system console (without requiring login).
+
+### 2. `nixosModules.host-keys`
+
+> :warning: The private key will be shared with the nix guest. Use at your own risk.
+
+Use a local ssh key as ssh host key in a virtual machine.
+
+```nix
+nixpkgs.lib.nixosSystem {
+  system = "x86_64-linux";
+  modules = [
+      everyday.nixosModules.host-keys
+      {
+        # scan id_ed25519 and id_ed25519.pub
+        host-keys.source = "/home/klarkc/.ssh";
+      }
+    ];
+  };
+```
+
+The host source keys are mounted in `/var/keys` and if:
+
+- `services.sshd.enable` is `true`, symlinks are created from `/var/keys/id_ed25519*` to `/etc/ssh_host_*`;
+- `age` exists, `age.identityPaths` is set to `/var/keys/id_ed25519`.
+
+#### Usage with agenix
+
+[`agenix`](https://github.com/ryantm/agenix) is a small and convenient Nix library for securely managing and deploying secrets using common public-private SSH key pairs.
+
+```nix
+nixpkgs.lib.nixosSystem {
+  system = "x86_64-linux";
+  modules = [
+      agenix.nixosModules.default
+      everyday.nixosModules.host-keys
+      ({ config, ...}: {
+        # scan for id_ed25519 and id_ed25519.pub
+        host-keys.source = "/home/klarkc/.ssh";
+        # assuming example.age is encrypted by klarkc
+        age.secrets.example.file = ./secrets/example.age;
+        # decripted file
+        example = config.age.secrets.example.path;
+      })
+    ];
+  };
+```
 
 ## Contributing
 
