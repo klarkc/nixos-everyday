@@ -12,6 +12,50 @@ Whether you're a seasoned NixOS user or just getting started, these modules aim 
 
 Configure a `logger` systemd service to pipe all system logs in the system console (without requiring login).
 
+### 2. `nixosModules.host-keys`
+
+> :warning: The private key will be shared with the nix guest. Use at your own risk.
+
+Use a local ssh key as ssh host key in a virtual machine.
+
+```nix
+nixpkgs.lib.nixosSystem {
+  system = "x86_64-linux";
+  modules = [
+      everyday.nixosModules.host-keys
+      {
+        # scan id_ed25519 and id_ed25519.pub
+        host-keys.source = "/home/klarkc/.ssh";
+      }
+    ];
+  };
+```
+
+The host source keys are mounted in `/var/keys` and if:
+
+- `services.sshd.enable` is `true`, symlinks are created from `/var/keys/id_ed25519*` to `/etc/ssh_host_*`;
+- `age` exists, `age.identityPaths` is set to `/var/keys/id_ed25519`.
+
+#### Usage with agenix
+
+```nix
+nixpkgs.lib.nixosSystem {
+  system = "x86_64-linux";
+  modules = [
+      agenix.nixosModules.default
+      everyday.nixosModules.host-keys
+      ({ config, ...}: {
+        # scan for id_ed25519 and id_ed25519.pub
+        host-keys.source = "/home/klarkc/.ssh";
+        # assuming example.age is encrypted by klarkc
+        age.secrets.example.file = ./secrets/example.age;
+        # decripted file
+        example = config.age.secrets.example.path;
+      })
+    ];
+  };
+```
+
 ## Getting Started
 
 To get started with NixOS Everyday, follow these steps:
