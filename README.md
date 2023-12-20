@@ -6,6 +6,40 @@ The NixOS Everyday provides a collection of useful modules for everyday use in N
 
 Whether you're a seasoned NixOS user or just getting started, these modules aim to make your daily system administration tasks more convenient and efficient.
 
+
+## Getting Started
+
+To get started with NixOS Everyday, follow these steps:
+
+1. Add the flake to your NixOS configuration's `flake.nix`:
+
+    ```nix
+    {
+      inputs = {
+        nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+        everyday.url = "github:klarkc/nixos-everyday";
+      };
+
+      outputs = { self, nixpkgs, everyday, ... }: {
+        nixosConfigurations.my-system = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            # Add the specific modules you want to use from the flake.
+            everyday.nixosModules.logger
+            # ...
+          ];
+        };
+      };
+    }
+    ```
+
+2. Customize the modules as needed by referring to the individual module documentation provided above.
+
+3. Apply the configuration changes using the `nixos-rebuild` command:
+
+    ```bash
+    nixos-rebuild switch --flake .#my-system
+    ```
 ## Features
 
 ### 1. `nixosModules.logger`
@@ -55,40 +89,6 @@ nixpkgs.lib.nixosSystem {
     ];
   };
 ```
-
-## Getting Started
-
-To get started with NixOS Everyday, follow these steps:
-
-1. Add the flake to your NixOS configuration's `flake.nix`:
-
-    ```nix
-    {
-      inputs = {
-        nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
-        everyday.url = "github:klarkc/nixos-everyday";
-      };
-
-      outputs = { self, nixpkgs, everyday, ... }: {
-        nixosConfigurations.my-system = nixpkgs.lib.nixosSystem {
-          system = "x86_64-linux";
-          modules = [
-            # Add the specific modules you want to use from the flake.
-            everyday.nixosModules.logger
-            # ...
-          ];
-        };
-      };
-    }
-    ```
-
-2. Customize the modules as needed by referring to the individual module documentation provided above.
-
-3. Apply the configuration changes using the `nixos-rebuild` command:
-
-    ```bash
-    nixos-rebuild switch --flake .#my-system
-    ```
 
 ## Contributing
 
